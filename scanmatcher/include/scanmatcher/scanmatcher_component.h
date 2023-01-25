@@ -105,7 +105,7 @@ private:
     std::packaged_task < void() > mapping_task_;
     std::future < void > mapping_future_;
 
-    geometry_msgs::msg::PoseStamped corrent_pose_stamped_;
+    geometry_msgs::msg::PoseStamped current_pose_stamped_;
     lidarslam_msgs::msg::MapArray map_array_msg_;
     nav_msgs::msg::Path path_;
     rclcpp::Publisher < geometry_msgs::msg::PoseStamped > ::SharedPtr pose_pub_;
@@ -137,6 +137,10 @@ private:
     // setting parameter
     std::string registration_method_;
     double trans_for_mapupdate_;
+    double rot_for_mapupdate_;
+    bool use_max_transform_ {false};
+    double max_acceptable_trans_;
+    double max_acceptable_rot_;
     double vg_size_for_input_;
     double vg_size_for_map_;
     bool use_min_max_filter_ {false};
@@ -150,9 +154,13 @@ private:
     bool use_imu_ {false};
     bool debug_flag_ {false};
 
+    double display_map_voxel_size_;
+
     // map
     Eigen::Vector3d previous_position_;
+    Eigen::Matrix3d previous_rot_mat_;
     double trans_;
+    double rot_;
     double latest_distance_ {0};
 
     // initial_pose
